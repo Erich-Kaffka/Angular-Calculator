@@ -13,7 +13,9 @@ export class CalculatorComponent implements OnInit {
   calculatorScreen : string = '0';
   currentNumber : string = null;
   firstOperand : number = null;
+  lastOperand : number = null;
   operator : string = null;
+  lastOperator : string = null;
   waitForSecondNumber : boolean = false;
   
   /* Function: getNumber
@@ -57,16 +59,28 @@ export class CalculatorComponent implements OnInit {
   
   /* Function: getOperation
    *  Purpose: Prepares the operand for calculation depending on the sequence entered
+   *
+   * ToDo: - Allow for multiple operators in a sequence
+   *       - Repeat calculations beyond two calculations
    */
   public getOperation(op : string){
+    var tempNum = Number(this.currentNumber);
     if (this.firstOperand === null) {
       this.firstOperand = Number(this.currentNumber); 
       this.calculatorScreen = this.firstOperand + op;
     } else if(this.operator) {
-      const result = this.doCalculation(this.operator, Number(this.currentNumber))
-      this.calculatorScreen = String(result);
+      const result = this.doCalculation(this.operator, Number(this.currentNumber));
+      this.calculatorScreen = this.operator != op && op != '=' ? this.calculatorScreen + op : String(result);
       this.firstOperand = result;
+      this.currentNumber = String(result);
+      if (op == '=' && this.operator == '=') {
+        const result = this.doCalculation(this.lastOperator, Number(this.lastOperand));
+        this.currentNumber = this.calculatorScreen = String(result);
+        this.firstOperand = result;
+      }
     }
+    if (op != '=') this.lastOperator = op;
+    else this.lastOperand = tempNum;
     this.operator = op;
     this.waitForSecondNumber = true;
   }
@@ -78,7 +92,9 @@ export class CalculatorComponent implements OnInit {
     this.calculatorScreen = '0';
     this.currentNumber = '0';
     this.firstOperand = null;
+    this.lastOperand = null;
     this.operator = null;
+    this.lastOperator = null;
     this.waitForSecondNumber = false;
   }  
 }

@@ -23,10 +23,10 @@ export class CalculatorComponent implements OnInit {
    */
   public getNumber(v : string){
     this.currentNumber = v;
-    if (this.waitForSecondNumber) {
+    if (this.waitForSecondNumber && this.operator != '=') {
       this.waitForSecondNumber = false;
       this.calculatorScreen += v;
-    } else this.calculatorScreen === '0' ? this.calculatorScreen = v : this.currentNumber += this.calculatorScreen += v;
+    } else this.calculatorScreen === '0' || this.operator == '=' ? this.calculatorScreen = v : this.currentNumber = this.calculatorScreen += v;
   }
   
   /* Function: getDecimal
@@ -60,8 +60,7 @@ export class CalculatorComponent implements OnInit {
   /* Function: getOperation
    *  Purpose: Prepares the operand for calculation depending on the sequence entered
    *
-   * ToDo: - Allow for multiple operators in a sequence
-   *       - Repeat calculations beyond two calculations
+   * ToDo: Doesn't quite follow BEDMAS operations (Could be issue with calculator screen and what is actually being calculated)
    */
   public getOperation(op : string){
     var tempNum = Number(this.currentNumber);
@@ -70,17 +69,20 @@ export class CalculatorComponent implements OnInit {
       this.calculatorScreen = this.firstOperand + op;
     } else if(this.operator) {
       const result = this.doCalculation(this.operator, Number(this.currentNumber));
-      this.calculatorScreen = this.operator != op && op != '=' ? this.calculatorScreen + op : String(result);
-      this.firstOperand = result;
+      this.calculatorScreen = this.operator != op && op != '=' ? this.calculatorScreen + op : op != '=' ? String(result) + op : String(result);
       this.currentNumber = String(result);
+      this.firstOperand = result;
       if (op == '=' && this.operator == '=') {
         const result = this.doCalculation(this.lastOperator, Number(this.lastOperand));
         this.currentNumber = this.calculatorScreen = String(result);
         this.firstOperand = result;
       }
     }
-    if (op != '=') this.lastOperator = op;
-    else this.lastOperand = tempNum;
+    if (op != '=') {
+      this.lastOperator = op;
+      this.lastOperand = null;
+    }
+    else if (this.lastOperand == null) this.lastOperand = tempNum;
     this.operator = op;
     this.waitForSecondNumber = true;
   }

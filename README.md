@@ -1,6 +1,8 @@
-# ECalculator
+# ECalculator v1.0.1
 
-Simple calculator application in Angular.
+Simple calculator application in Angular. Trying to replicate most of the functionality in a standard calculator - still a work in progress.
+
+ToDo: Doesn't quite follow BEDMAS operations (Could be issue with calculator screen and what is actually being calculated)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
 
@@ -29,3 +31,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Revisions
+
+1.0.0 - 07/07/2019 - Initial project built
+1.0.1 - 08/07/2019 - Update to calculations: now can do sequence of operations, including hitting the '=' button more than once

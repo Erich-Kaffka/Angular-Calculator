@@ -35,4 +35,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Revisions
 
 1.0.0 - 07/07/2019 - Initial project built
+
 1.0.1 - 08/07/2019 - Update to calculations: now can do sequence of operations, including hitting the '=' button more than once
